@@ -27,15 +27,20 @@ app.use(session({
 
 app.use(cookieParser());
 
-// app.options('*', cors({
-//     origin: "https://chopain-front.vercel.app/",
-//     credentials: true
-// }));
-
-// app.use(cors({
-//     origin: "https://chopain-front.vercel.app/",
-//     credentials: true  // Allows cookies and authentication headers
-// }));
+app.use(cors({
+    origin: '*', // Allow all origins
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
+  
+  // Handle preflight requests
+  app.options('*', cors({
+    origin: '*', // Allow all origins
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
 
 app.use(rout)
 
