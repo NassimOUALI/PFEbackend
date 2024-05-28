@@ -40,7 +40,7 @@ class CommandeModel {
 					} else {
 						db.query("SELECT * FROM commande WHERE id = ?",
 							[id],
-							(err2, res2)=>{
+							(err2, res2) => {
 								if (err2) {
 									reject(false)
 								} else {
@@ -183,19 +183,71 @@ class CommandeModel {
 		})
 	}
 
-	static async getReviewedByAdmin(id){
-		return new Promise((resolve, reject)=>{
+	static async getReviewedByAdmin(id) {
+		return new Promise((resolve, reject) => {
 			db.query("SELECT commande.*, payment.montant, users.username FROM commande LEFT JOIN payment ON payment.id = commande.id_payment LEFT JOIN users ON commande.id_client = users.id WHERE commande.id_admin = ? ORDER BY commande.id DESC;",
 				[id],
-				(err,res)=>{
-					if(err){
+				(err, res) => {
+					if (err) {
 						reject(err)
-					}else{
+					} else {
 						resolve(res)
 					}
 				}
 			)
 		})
+	}
+
+	static async getRecent() {
+		return new Promise((resolve, reject) => {
+
+			db.query("SELECT commande.*, payment.montant, users.username FROM commande LEFT JOIN payment ON payment.id = commande.id_payment LEFT JOIN users ON commande.id_client = users.id WHERE commande.etat = ? ORDER BY commande.date_commande DESC LIMIT 3;",
+				["attente"],
+				(err, res) => {
+					if (err) {
+						reject(err)
+					} else {
+						resolve(res)
+					}
+				}
+			)
+
+		})
+	}
+
+	static async numCommande() {
+		try {
+			const currentYear = new Date().getFullYear();
+			const currentMonth = new Date().getMonth() + 1; // getMonth() is zero-based
+			const currentDay = new Date().getDate(); // getDate() returns the day of the month
+
+			const yearCountPromise = new Promise((resolve, reject) => {
+				db.query("SELECT count(*) as cnt FROM commande WHERE YEAR(date_commande) = ?", [currentYear], (err, res) => {
+					if (err) reject(err);
+					else resolve(res[0].cnt);
+				});
+			});
+
+			const monthCountPromise = new Promise((resolve, reject) => {
+				db.query("SELECT count(*) as cnt FROM commande WHERE MONTH(date_commande) = ?", [currentMonth], (err, res) => {
+					if (err) reject(err);
+					else resolve(res[0].cnt);
+				});
+			});
+
+			const dayCountPromise = new Promise((resolve, reject) => {
+				db.query("SELECT count(*) as cnt FROM commande WHERE DAY(date_commande) = ?", [currentDay], (err, res) => {
+					if (err) reject(err);
+					else resolve(res[0].cnt);
+				});
+			});
+
+			const [yearCount, monthCount, dayCount] = await Promise.all([yearCountPromise, monthCountPromise, dayCountPromise]);
+
+			return { year: yearCount, month: monthCount, day: dayCount };
+		} catch (err) {
+			throw err;
+		}
 	}
 
 }

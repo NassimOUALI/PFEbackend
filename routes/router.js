@@ -19,6 +19,8 @@ router.get("/admin/reviewcommande",tokenVerfication, adminVerification, UserCont
 router.post("/admin/reviewcommande/validate",tokenVerfication, adminVerification, UserController.validateCommande); // validate a commande
 router.post("/admin/reviewcommande/refuse",tokenVerfication, adminVerification, UserController.refuseCommande); // refuse a commande
 router.get("/admin/historique",tokenVerfication, adminVerification, UserController.getReviewedByAdmin)
+router.get("/admin/recent",tokenVerfication, adminVerification, UserController.getRecent)
+router.get("/admin/numcommande",tokenVerfication, adminVerification, UserController.numCommande)
 router.get("/admin/getallusers",tokenVerfication, adminVerification, UserController.getAll); // getting all users
 router.post("/admin/deleteuser",tokenVerfication, adminVerification, UserController.deleteUser); // deleting a user (not really used)
 router.post("/admin/promoteuser",tokenVerfication, adminVerification, UserController.promoteuser); // deleting a user (not really used)

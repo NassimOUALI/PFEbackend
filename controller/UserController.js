@@ -371,6 +371,31 @@ class UserController {
         res.status(200).send(results)
     }
 
+    static async getRecent(req, res){
+        if (!req.user.id) {
+            console.log("userContr : no user id provided");
+            res.status(402).json({ message: "missing params" });
+            return
+        }
+
+        const results = await CommandeModel.getRecent(req.user.id)
+        console.log(results);
+        res.status(200).send(results)
+    }
+
+    static async numCommande(req, res){
+        if (!req.user.id) {
+            console.log("userContr : no user id provided");
+            res.status(402).json({ message: "missing params" });
+            return
+        }
+
+        const results = await CommandeModel.numCommande()
+        console.log(results);
+        res.status(200).json(results)
+    }
+
+
     static async promoteuser(req, res) {
         const { id } = req.body;
 
