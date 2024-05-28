@@ -27,7 +27,6 @@ class UserController {
     }
 
     static async addUser(req, res) {
-        console.log("adding a user...");
         try {
 
             const { username, password, nom, prenom, telephone, email, adresse, city } = req.body;
@@ -69,7 +68,6 @@ class UserController {
     }
 
     static async login(req, res) {
-        console.log("Checking credentials...");
         try {
             const { email, password } = req.body;
 
@@ -149,7 +147,6 @@ class UserController {
     }
 
     static async deleteUser(req, res) {
-        console.log("Deleting user...");
         try {
             let username = req.body.username;
 
@@ -173,7 +170,7 @@ class UserController {
     }
 
     static async getByUsername(req, res) {
-        console.log("fetching user : ", req.body.username, "...");
+        // console.log("fetching user : ", req.body.username, "...");
         try {
             let username = req.body.username
 
@@ -181,7 +178,7 @@ class UserController {
                 let results = await UserModel.getByUsername(username);
 
                 if (results) {
-                    console.log("Got user info : " + username);
+                    // console.log("Got user info : " + username);
                     res.send(results);
                 } else {
                     console.log("User not found:", username);
@@ -367,7 +364,7 @@ class UserController {
         }
 
         const results = await CommandeModel.getReviewedByAdmin(req.user.id)
-        console.log(results);
+        // console.log(results);
         res.status(200).send(results)
     }
 
@@ -379,7 +376,7 @@ class UserController {
         }
 
         const results = await CommandeModel.getRecent(req.user.id)
-        console.log(results);
+        // console.log(results);
         res.status(200).send(results)
     }
 
@@ -391,7 +388,7 @@ class UserController {
         }
 
         const results = await CommandeModel.numCommande()
-        console.log(results);
+        // console.log(results);
         res.status(200).json(results)
     }
 

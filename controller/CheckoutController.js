@@ -22,7 +22,7 @@ class CheckoutController {
 
 		const { user_id, email, nom, prenom, adresse, ville, codePostale, telephone } = req.session.currentCommandeData;
 		const payment = req.session.payment_id
-		console.log(payment);
+		// console.log(payment);
 		if (!email || !nom || !prenom || !adresse || !ville || !codePostale || !telephone) {
 			console.log(req.session.currentCommandeData);
 			return res.status(400).send({
@@ -39,7 +39,7 @@ class CheckoutController {
 			const receipt_info = await PDFManager.makeReceipt(req, res);
 			await PaymentModel.createPayment(payment, receipt_info.subtotal);
 
-			console.log("user saving cmd : ", user_id);
+			// console.log("user saving cmd : ", user_id);
 
 			const commande_id = user_id ?
 				await CommandeModel.createInitAvecClient(email, nom, prenom, adresse, ville, codePostale, telephone, user_id, payment, receipt_info.receipt_path) :

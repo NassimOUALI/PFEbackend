@@ -31,5 +31,5 @@ app.use(cors({
 app.use(rout)
 
 app.listen(process.env.PORT, () => {
-    console.log(`Example app listening at http://localhost:${process.env.PORT}`);
+    console.log(`Application server listening at http://localhost:${process.env.PORT}`);
 });

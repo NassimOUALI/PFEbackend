@@ -21,7 +21,6 @@ class ProductController {
 
     static async getById(req, res) {
 
-        console.log("fetching Product...");
         try {
             let Id = req.body.productId
 
@@ -29,7 +28,7 @@ class ProductController {
                 let results = await ProduitModel.getById(Id);
 
                 if (results) {
-                    console.log("Got user info : " + Id);
+                    // console.log("Got user info : " + Id);
                     res.send(results);
                 } else {
                     console.log("User not found:", Id);
