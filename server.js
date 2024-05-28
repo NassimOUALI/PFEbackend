@@ -23,6 +23,11 @@ app.use(session({
 
 app.use(cookieParser());
 
+app.options('*', cors({
+    origin: "https://chopain-front.vercel.app/",
+    credentials: true
+}));
+
 app.use(cors({
     origin: "https://chopain-front.vercel.app/",
     credentials: true  // Allows cookies and authentication headers
