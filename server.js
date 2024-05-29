@@ -19,6 +19,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
+    sameSite: "none",
+    secure: true,
     maxAge: 1000 * 60 * 60 * 24, // sets the cookies for 24h 
   },
 }))
@@ -27,14 +29,14 @@ app.use(session({
 app.use(cookieParser());
 
 app.use(cors({
-  origin: 'https://chopain-front.vercel.app', // Allow all origins
+  origin: 'http://localhost:5173', // Allow all origins
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
 
 // Handle preflight requests
 app.options('*', cors({
-  origin: 'https://chopain-front.vercel.app', // Allow all origins
+  origin: 'http://localhost:5173', // Allow all origins
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
