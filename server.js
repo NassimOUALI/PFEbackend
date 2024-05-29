@@ -20,7 +20,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    sameSite: "none",
+    sameSite: "Lax",
     secure: true,
     maxAge: 1000 * 60 * 60 * 24, // sets the cookies for 24h 
   },
