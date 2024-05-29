@@ -15,12 +15,11 @@ const sessionStore = new MySQLStore({}, db);
 
 //registring the session and cookies andd cors(for security and other features) and the router and starting the derver on a port port middlewares
 app.use(session({
+  store: sessionStore,
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
-    sameSite: "none",
-    secure: true,
     maxAge: 1000 * 60 * 60 * 24, // sets the cookies for 24h 
   },
 }))
@@ -29,14 +28,14 @@ app.use(session({
 app.use(cookieParser());
 
 app.use(cors({
-  origin: 'https://chopain-front.vercel.app/', // Allow all origins
+  origin: 'https://chopain-front.vercel.app', // Allow all origins
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 }));
 
 // Handle preflight requests
 app.options('*', cors({
-  origin: 'https://chopain-front.vercel.app/', // Allow all origins
+  origin: 'https://chopain-front.vercel.app', // Allow all origins
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
