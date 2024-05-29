@@ -2,10 +2,10 @@ const mysql = require('mysql')
 
 
 const db = mysql.createPool({
-    host: process.env.DB_SERVER,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME
+    host: '127.0.0.1',
+    user: 'root',
+    password: '',
+    database: 'chopain'
 })
 
 db.getConnection((err, connection) => {
