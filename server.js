@@ -15,7 +15,6 @@ const sessionStore = new MySQLStore({}, db);
 
 //registring the session and cookies andd cors(for security and other features) and the router and starting the derver on a port port middlewares
 app.use(session({
-  store: sessionStore,
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
