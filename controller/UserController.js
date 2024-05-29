@@ -96,7 +96,7 @@ class UserController {
 
                 return res
                     .status(200)
-                    .json({
+                    .send({
                         message: "Correct credentials",
                         token,
                         user
