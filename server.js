@@ -26,6 +26,18 @@ app.use(session({
   },
 }))
 
+app.use((req, res, next) => {
+  console.log(req.sessionID);
+  console.log(req.body.sessionid);
+  if (req.body.sessionid) {
+    req.sessionID = req.body.sessionid
+    next()
+  }
+  {
+    // req.sessionid = generated
+  }
+})
+
 
 app.use(cookieParser());
 
