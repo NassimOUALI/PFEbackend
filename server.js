@@ -29,8 +29,9 @@ app.use(session({
 app.use((req, res, next) => {
   if (req.body.sessionid) {
     req.sessionID = req.body.sessionid
-    next()
-  }
+  }    
+  next()
+
 })
 
 
