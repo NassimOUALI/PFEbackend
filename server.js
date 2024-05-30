@@ -13,6 +13,8 @@ app.use(express.json());
 
 const sessionStore = new MySQLStore({}, db);
 
+app.enable('trust proxy')
+
 //registring the session and cookies andd cors(for security and other features) and the router and starting the derver on a port port middlewares
 app.use(session({
   store: sessionStore,
