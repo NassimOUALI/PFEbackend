@@ -22,9 +22,12 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true, maxAge: 1000 * 60 * 60 * 48
+    secure: true, maxAge: 1000 * 60 * 60 * 48, httpOnly:true
   },
 }))
+
+app.use(cookieParser());
+
 
 app.use((req, res, next) => {
   if (req.body && req.body.sessionid) {
@@ -34,7 +37,6 @@ app.use((req, res, next) => {
 })
 
 
-app.use(cookieParser());
 
 app.use(cors({
   origin: 'https://chopain-front.vercel.app', // Allow all origins
