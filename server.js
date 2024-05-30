@@ -30,14 +30,14 @@ app.use(cookieParser());
 app.use(cors({
   origin: 'http://localhost:5173', // Allow all origins
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST'],
 }));
 
 // Handle preflight requests
 app.options('*', cors({
   origin: 'http://localhost:5173', // Allow all origins
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
