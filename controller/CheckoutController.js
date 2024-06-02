@@ -65,6 +65,9 @@ class CheckoutController {
 					<p>Nous espérons que vous apprécierez votre achat. Si vous avez des questions, n'hésitez pas à nous contacter au 0500000000.</p>
 					`
 					, receipt_info.receipt_path);
+
+				console.log(`Commande [${commande_id}] a bien etée enregistrée`);
+
 				res.status(200).send({
 					status: 200,
 					message: "Commande added",

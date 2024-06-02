@@ -95,7 +95,7 @@ class UserController {
                 req.session.userId = user.id;
 
                 const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET)
-
+                console.log(`User : ${user.username} connected`);
                 return res
                     .status(200)
                     .json({
@@ -119,6 +119,7 @@ class UserController {
 
     static async logout(req, res) {
         req.session.destroy();
+        console.log(`User : ${req.user.username} logged out`);
         res.status(200).json({
             status: 200,
             message: "logged out"
@@ -302,6 +303,7 @@ class UserController {
                     )}.</p>
                 <p>Nous espérons que vous apprécierez votre achat. Si vous avez des questions, n'hésitez pas à nous contacter au 0500000000.</p>
                 `)
+                console.log(`Commande [${id_commande}] validée par ${req.user.username}`);
                 return res.status(200).json({
                     message: "validated"
                 })
@@ -330,6 +332,8 @@ class UserController {
                 const refund = await stripe.refunds.create({
                     payment_intent: paymentIntentId
                 });
+
+                console.log(`Commande [${id_commande}] refusée par ${req.user.username}`);
 
                 console.log(`Refund created successfully: ${refund.id}`);
             } catch (error) {
@@ -367,7 +371,6 @@ class UserController {
         }
 
         const results = await CommandeModel.getReviewedByAdmin(req.user.id)
-        console.log(results);
         res.status(200).send(results)
     }
 
@@ -379,7 +382,6 @@ class UserController {
         }
 
         const results = await CommandeModel.getRecent(req.user.id)
-        console.log(results);
         res.status(200).send(results)
     }
 
@@ -391,7 +393,6 @@ class UserController {
         }
 
         const results = await CommandeModel.numCommande()
-        console.log(results);
         res.status(200).json(results)
     }
 
