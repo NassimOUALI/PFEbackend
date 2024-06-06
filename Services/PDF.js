@@ -22,8 +22,8 @@ function generateHeader(doc) {
     .text("Chopain", 110, 57)
     .fontSize(10)
     .text("Chopain", 200, 50, { align: "right" })
-    .text("... lieu 1", 200, 65, { align: "right" })
-    .text("Mensouria...", 200, 80, { align: "right" })
+    .text("Lot 26-27 la nouvelle zone industrielle Mohammedia,Maroc", 200, 65, { align: "right" })
+    .text("Téléphone: 05 23 31 33 33", 200, 80, { align: "right" })
     .moveDown();
 }
 
