@@ -14,6 +14,10 @@ router.post("/user/getuser", tokenVerfication, UserController.getByUsername);// 
 router.post("/user/login", UserController.login); // login
 router.get("/user/logout",tokenVerfication, UserController.logout); // logout
 router.get("/user/isLogged",tokenVerfication, UserController.isLogged); // checking login status
+router.post("/user/OTP/login",UserController.loginEmail);
+router.post("/user/OTP/sendOTP",UserController.sendOTP);
+router.post("/user/OTP/changepass",tokenVerfication, UserController.changePass);
+
 
 router.get("/admin/reviewcommande",tokenVerfication, adminVerification, UserController.getReviewCommande); // get commandes to review
 router.post("/admin/reviewcommande/validate",tokenVerfication, adminVerification, UserController.validateCommande); // validate a commande

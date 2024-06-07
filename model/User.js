@@ -4,6 +4,31 @@ const saltRounds = 10;
 
 class UserModel {
 
+    static async changePassword(id, password){
+        try {
+            // hashage du password
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+            // changement
+            return new Promise((resolve, reject) => {
+                db.query(
+                    "UPDATE users SET password = ? WHERE id = ?",
+                    [hashedPassword, id],
+                    (err, results) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(true);
+                        }
+                    }
+                );
+            });
+        } catch (error) {
+            console.error('Error hashing password: ', error);
+            throw new Error('Failed to hash password');
+        }
+    }
+
     static async getAll() {
 
         return new Promise((resolve, reject) => {

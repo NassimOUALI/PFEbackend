@@ -7,7 +7,6 @@ const fs = require('fs');
 const jwt = require("jsonwebtoken")
 const path = require('path');
 const sendmail = require('../Services/mail');
-const exp = require('constants');
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
 class UserController {
@@ -67,6 +66,8 @@ class UserController {
             res.status(500).send('Error addUser: ' + error.message);
         }
     }
+
+
 
     static async login(req, res) {
         console.log("Checking credentials...");
@@ -374,7 +375,7 @@ class UserController {
         res.status(200).send(results)
     }
 
-    static async getRecent(req, res){
+    static async getRecent(req, res) {
         if (!req.user.id) {
             console.log("userContr : no user id provided");
             res.status(402).json({ message: "missing params" });
@@ -385,7 +386,7 @@ class UserController {
         res.status(200).send(results)
     }
 
-    static async numCommande(req, res){
+    static async numCommande(req, res) {
         if (!req.user.id) {
             console.log("userContr : no user id provided");
             res.status(402).json({ message: "missing params" });
@@ -452,6 +453,113 @@ class UserController {
         }
 
     }
+
+    static async sendOTP(req, res) {
+        const { email, OTP } = req.body;
+
+        req.session.OTP = OTP;
+
+        setTimeout(() => {
+            req.session.OTP = null;
+        }, 300000);
+
+        if (!email || !OTP || !req.query) {
+            console.log("demoteuser : not enough params");
+            res.status(402).json({ message: "missing params" });
+            return
+        }
+
+        sendmail(email,
+            "Code de recuperation de compte",
+            `<p>Votre code de recuperation est : </p><h1>${OTP}</h1>`)
+
+        res.send("done")
+    }
+
+    static async loginEmail(req, res) {
+        try {
+            const { email, OTP } = req.body;
+
+            if (!email || !OTP) {
+                return res.status(400).send({
+                    status: 400,
+                    message: "Missing or invalid parameters"
+                });
+            }
+
+            if(!req.session.OTP){
+                return res.status(440).send({
+                    status: 440 ,
+                    message: "Session expired"
+                });
+            }
+
+            if(req.session.OTP != OTP){
+                return res.status(402).send({
+                    status: 402 ,
+                    message: "unAuthorized OTP"
+                });
+            }
+
+            let user = await UserModel.getByEmail(email);
+
+            if (!user || user.length == 0) {
+                return res.status(404).send({
+                    status: 404,
+                    message: 'Email not found'
+                });
+            }
+
+            const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET)
+            console.log(`User : ${user.username} connected`);
+            return res
+                .status(200)
+                .json({
+                    message: "Correct credentials",
+                    token,
+                    user
+                })
+
+        } catch (error) {
+            console.log("Error loggingEmail in user:", error.message);
+            res.status(500).send('Error logging in: ' + error.message);
+        }
+    }
+
+    static async changePass(req, res){
+        const {password, OTP} = req.body;
+
+        if (!password || !OTP) {
+            return res.status(400).send({
+                status: 400,
+                message: "Missing or invalid parameters"
+            });
+        }
+
+        if(!req.session.OTP){
+            return res.status(440).send({
+                status: 440 ,
+                message: "Session expired"
+            });
+        }
+
+        if(req.session.OTP != OTP){
+            return res.status(402).send({
+                status: 402 ,
+                message: "unAuthorized OTP"
+            });
+        }
+        
+        try {
+            UserModel.changePassword(req.user.id, password)
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send({
+                status: 500,
+                message: "Internal server error"
+            });
+        }
+    } 
 }
 
 module.exports = UserController
